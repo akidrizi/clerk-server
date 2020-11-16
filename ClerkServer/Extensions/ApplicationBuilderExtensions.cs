@@ -5,7 +5,7 @@ namespace ClerkServer.Extensions {
 	public static class ApplicationBuilderExtensions {
 
 		/*
-		 * Sets up Swagger JSON location and serve at app root location.
+		 * Sets up Swagger JSON path and serve at app root.
 		 */
 		public static void UseClerkSwagger(this IApplicationBuilder app) {
 			app.UseSwagger();

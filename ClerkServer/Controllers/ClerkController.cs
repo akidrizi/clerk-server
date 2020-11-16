@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using ClerkServer.Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClerkServer.Controllers {
@@ -7,8 +9,8 @@ namespace ClerkServer.Controllers {
 	public class ClerkController : ControllerBase {
 
 		[HttpGet("clerks")]
-		public string Get() {
-			return "Test";
+		public async Task<IActionResult> Get() {
+			return Ok(new User());
 		}
 
 	}

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using ClerkServer.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -21,7 +24,7 @@ namespace ClerkServer.Extensions {
 		}
 
 		/*
-		 * Configure Swagger Document and enables XML comments.
+		 * Configures Swagger document and enables XML comments.
 		 */
 		public static void ConfigureSwagger(this IServiceCollection services) {
 			services.AddSwaggerGen();
@@ -40,6 +43,14 @@ namespace ClerkServer.Extensions {
 				var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 				c.IncludeXmlComments(xmlPath);
 			});
+		}
+
+		/*
+		 * Configures EF Core to operate with MySQL. 
+		 */
+		public static void ConfigureMySqlContext(this IServiceCollection services, IConfiguration config) {
+			var connectionString = config["ConnectionStrings:DefaultConnection"];
+			services.AddDbContext<RepositoryContext>(o => o.UseMySql(connectionString));
 		}
 
 	}
