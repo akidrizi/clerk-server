@@ -22,6 +22,7 @@ namespace ClerkServer {
 			services.ConfigureAllowAllCors();
 
 			services.ConfigureMySqlContext(Configuration);
+			services.ConfigureRepositoryWrapper();
 			
 			services.AddControllers();
 		}

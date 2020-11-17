@@ -28,7 +28,8 @@ namespace ClerkServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
-                column: "Email");
+                column: "Email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

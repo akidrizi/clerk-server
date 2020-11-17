@@ -13,7 +13,7 @@ namespace ClerkServer.Entities {
 		protected override void OnModelCreating(ModelBuilder modelBuilder) {
 			modelBuilder.Entity<User>(user => {
 				user.HasKey(e => e.Id);
-				user.HasIndex(e => e.Email);
+				user.HasIndex(e => e.Email).IsUnique();
 			});
 		}
 

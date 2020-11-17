@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using ClerkServer.Contracts;
 using ClerkServer.Entities;
+using ClerkServer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +53,13 @@ namespace ClerkServer.Extensions {
 		public static void ConfigureMySqlContext(this IServiceCollection services, IConfiguration config) {
 			var connectionString = config["ConnectionStrings:DefaultConnection"];
 			services.AddDbContext<RepositoryContext>(o => o.UseMySql(connectionString));
+		}
+
+		/*
+		 * Registers generic repository wrapper in the IOC.
+		 */
+		public static void ConfigureRepositoryWrapper(this IServiceCollection services) {
+			services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 		}
 
 	}

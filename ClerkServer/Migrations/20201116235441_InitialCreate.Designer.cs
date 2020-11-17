@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClerkServer.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20201116222918_InitialCreate")]
+    [Migration("20201116235441_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,8 @@ namespace ClerkServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
