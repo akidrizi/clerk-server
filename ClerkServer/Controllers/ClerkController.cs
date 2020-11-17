@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClerkServer.Contracts;
 using ClerkServer.Domain;
-using ClerkServer.Entities.Models;
+using ClerkServer.RandomUserAPI;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClerkServer.Controllers {
@@ -12,9 +12,11 @@ namespace ClerkServer.Controllers {
 	public class ClerkController : ControllerBase {
 
 		private readonly IRepositoryWrapper _repository;
+		private readonly RandomUserService _randomUserService;
 
-		public ClerkController(IRepositoryWrapper repository) {
+		public ClerkController(IRepositoryWrapper repository, RandomUserService randomUserService) {
 			_repository = repository;
+			_randomUserService = randomUserService;
 		}
 
 		[HttpGet("clerks")]
@@ -57,7 +59,8 @@ namespace ClerkServer.Controllers {
 		
 		[HttpPost("populate")]
 		public async Task<IActionResult> Post() {
-			return Ok(new User());
+			var catalog = await _randomUserService.GetRandomUsersAsync(4);
+			return Ok(catalog);
 		}
 
 	}

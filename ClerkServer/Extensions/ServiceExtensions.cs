@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using ClerkServer.Contracts;
 using ClerkServer.Entities;
+using ClerkServer.RandomUserAPI;
 using ClerkServer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -60,6 +61,13 @@ namespace ClerkServer.Extensions {
 		 */
 		public static void ConfigureRepositoryWrapper(this IServiceCollection services) {
 			services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+		}
+
+		/*
+		 * Registers RandomUserAPI client in the IOC.
+		 */
+		public static void ConfigureRandomUserAPIClient(this IServiceCollection services) {
+			services.AddHttpClient<RandomUserService>();
 		}
 
 	}

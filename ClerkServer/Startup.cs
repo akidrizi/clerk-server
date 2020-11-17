@@ -24,6 +24,8 @@ namespace ClerkServer {
 			services.ConfigureMySqlContext(Configuration);
 			services.ConfigureRepositoryWrapper();
 			
+			services.ConfigureRandomUserAPIClient();
+			
 			services.AddControllers();
 		}
 
