@@ -26,7 +26,9 @@ namespace ClerkServer {
 			
 			services.ConfigureRandomUserAPIClient();
 			
-			services.AddControllers();
+			services.AddControllers().AddJsonOptions(options => {
+				options.JsonSerializerOptions.IgnoreNullValues = true;
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

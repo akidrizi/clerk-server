@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ClerkServer.Contracts;
@@ -26,7 +27,7 @@ namespace ClerkServer.Controllers {
 			return Ok(users);
 		}
 
-		[HttpGet("clerks/{id}" , Name = "GetUserById")]
+		[HttpGet("clerks/{id}", Name = "GetUserById")]
 		public async Task<IActionResult> GetUserById(long id) {
 			var user = await _repository.User.GetUserByIdAsync(id);
 			if (user == null) return BadRequest();
@@ -50,17 +51,22 @@ namespace ClerkServer.Controllers {
 					message = $"Email {request.Email} is in use"
 				});
 			}
-			
+
 			var createdUser = _repository.User.CreateUser(request);
 			await _repository.SaveAsync();
-			
+
 			return CreatedAtRoute("GetUserById", new { id = createdUser.Id }, createdUser);
 		}
-		
+
 		[HttpPost("populate")]
 		public async Task<IActionResult> Post() {
-			var catalog = await _randomUserService.GetRandomUsersAsync(4);
-			return Ok(catalog);
+			try {
+				var catalog = await _randomUserService.GetRandomUsersAsync(5000);
+				return Ok(catalog);
+			} catch (Exception e) {
+				Console.WriteLine(e);
+				return StatusCode(500);
+			}
 		}
 
 	}
