@@ -15,6 +15,18 @@ namespace ClerkServer.Contracts.Domain {
 
 		User CreateUser(UserDto dto);
 
+		/*
+		 * Inserts list of users in the database.
+		 * Will exclude emails that already exist.
+		 */
+		void BulkInsertUsers(List<User> users);
+		
+		/*
+		 * Inserts list of users in the database.
+		 * Will exclude emails that already exist.
+		 */
+		Task BulkInsertUsersAsync(List<User> users);
+		
 		User FindByEmail(string email);
 		Task<User> FindByEmailAsync(string email);
 

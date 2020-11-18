@@ -25,8 +25,8 @@ namespace ClerkServer.Repository {
 			}
 		}
 
-		public async Task SaveAsync() {
-			await _context.SaveChangesAsync();
+		public async Task<int> SaveAsync() {
+			return await _context.SaveChangesAsync();
 		}
 
 	}

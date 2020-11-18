@@ -8,7 +8,10 @@ namespace ClerkServer.Extensions {
 
 	public static class ExceptionMiddlewareExtensions {
 
-		public static void ConfigureExceptionHandler(this IApplicationBuilder app) {
+		/**
+		 * Extends native exception handler.
+		 */
+		public static void UseClerkExceptionHandler(this IApplicationBuilder app) {
 			app.UseExceptionHandler(appError => {
 				appError.Run(async context => {
 					context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -16,7 +19,7 @@ namespace ClerkServer.Extensions {
 
 					var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 					if (contextFeature != null) {
-						// logger.LogError($"Something went wrong: {contextFeature.Error}");
+
 						await context.Response.WriteAsync(new ErrorDetails {
 							StatusCode = context.Response.StatusCode,
 							Message = $"Internal server error: {contextFeature.Error.Message}",

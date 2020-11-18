@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace ClerkServer {
 
@@ -39,6 +40,7 @@ namespace ClerkServer {
 
 			app.UseClerkSwagger();
 			app.UseCors("AllCORS");
+			app.UseClerkExceptionHandler();
 			
 			// Forward headers behind reverse proxy.
 			app.UseForwardedHeaders(new ForwardedHeadersOptions {

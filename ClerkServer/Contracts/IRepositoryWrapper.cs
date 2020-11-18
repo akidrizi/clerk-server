@@ -6,7 +6,7 @@ namespace ClerkServer.Contracts {
 	public interface IRepositoryWrapper {
 
 		IUserRepository User { get; }
-		Task SaveAsync();
+		Task<int> SaveAsync();
 
 	}
 

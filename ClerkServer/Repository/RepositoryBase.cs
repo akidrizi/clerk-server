@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using ClerkServer.Contracts;
 using ClerkServer.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +29,20 @@ namespace ClerkServer.Repository {
 			RepositoryContext.Set<T>().Add(entity);
 		}
 
+		public void CreateRange(IEnumerable<T> entities) {
+			RepositoryContext.Set<T>().AddRange(entities);
+		}
+
+		public async Task CreateRangeAsync(IEnumerable<T> entities) {
+			await RepositoryContext.Set<T>().AddRangeAsync(entities);
+		}
+		
 		public void Update(T entity) {
 			RepositoryContext.Set<T>().Update(entity);
+		}
+
+		public void UpdateRange(IEnumerable<T> entities) {
+			RepositoryContext.Set<T>().UpdateRange(entities);
 		}
 
 		public void Delete(T entity) {

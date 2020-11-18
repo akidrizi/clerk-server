@@ -37,8 +37,32 @@ namespace ClerkServer.Repository.Domain {
 				Picture = dto.Picture,
 			};
 			Create(user);
-			
+
 			return user;
+		}
+
+		public void BulkInsertUsers(List<User> users) {
+			var incomingEmails = users.Select(u => u.Email).ToList();
+			var dbEmails = FindByCondition(u => incomingEmails
+					.Any(e => e == u.Email))
+				.Select(u => u.Email).ToList();
+
+			var existing = users.Where(u => dbEmails.Any(e => e == u.Email)).ToList();
+			var newEntries = users.Except(existing).ToList();
+
+			CreateRange(newEntries);
+		}
+
+		public async Task BulkInsertUsersAsync(List<User> users) {
+			var incomingEmails = users.Select(u => u.Email).ToList();
+			var dbEmails = await FindByCondition(u => incomingEmails
+					.Any(e => e == u.Email))
+				.Select(u => u.Email).ToListAsync();
+
+			var existing = users.Where(u => dbEmails.Any(e => e == u.Email)).ToList();
+			var newEntries = users.Except(existing).ToList();
+
+			await CreateRangeAsync(newEntries);
 		}
 
 		public User FindByEmail(string email) {

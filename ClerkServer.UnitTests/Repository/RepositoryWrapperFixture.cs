@@ -2,7 +2,6 @@
 using System.Data.Common;
 using ClerkServer.Entities;
 using ClerkServer.UnitTests.Constants;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 

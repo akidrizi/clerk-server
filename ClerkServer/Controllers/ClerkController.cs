@@ -1,8 +1,9 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ClerkServer.Constants;
 using ClerkServer.Contracts;
 using ClerkServer.Domain;
+using ClerkServer.Extensions;
 using ClerkServer.RandomUserAPI;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,43 +31,29 @@ namespace ClerkServer.Controllers {
 		[HttpGet("clerks/{id}", Name = "GetUserById")]
 		public async Task<IActionResult> GetUserById(long id) {
 			var user = await _repository.User.GetUserByIdAsync(id);
-			if (user == null) return BadRequest();
+			if (user == null) {
+				ModelState.AddModelError("Not Found", string.Format(APIMessages.UserIdNotFound, id));
+				return BadRequest();
+			}
 
 			return Ok(user);
 		}
 
-		[HttpPost("clerks")]
-		public async Task<IActionResult> CreateUser(UserDto request) {
-			if (!ModelState.IsValid) {
-				return BadRequest(new {
-					error = "Bad Request sent from Client",
-					message = ModelState.Values.SelectMany(v => v.Errors)
-				});
-			}
-
-			var user = await _repository.User.FindByEmailAsync(request.Email);
-			if (user != null) {
-				return BadRequest(new {
-					error = "Bad Request sent from Client",
-					message = $"Email {request.Email} is in use"
-				});
-			}
-
-			var createdUser = _repository.User.CreateUser(request);
-			await _repository.SaveAsync();
-
-			return CreatedAtRoute("GetUserById", new { id = createdUser.Id }, createdUser);
-		}
-
 		[HttpPost("populate")]
-		public async Task<IActionResult> Post() {
-			try {
-				var catalog = await _randomUserService.GetRandomUsersAsync(5000);
-				return Ok(catalog);
-			} catch (Exception e) {
-				Console.WriteLine(e);
-				return StatusCode(500);
+		public async Task<IActionResult> Post([FromBody]PopulateRequest request) {
+			var users = await _randomUserService.GetUsersWithUniqueEmail(request.Users);
+			if (!users.Any()) {
+				ModelState.AddModelError("Unavailable", APIMessages.RandomUserAPIUnavailable);
+				return StatusCode(503);
 			}
+
+			await _repository.User.BulkInsertUsersAsync(users);
+			var stored = await _repository.SaveAsync();
+
+			return Ok(new PopulateResponse {
+				Results = users.Count,
+				Stored = stored
+			});
 		}
 
 	}

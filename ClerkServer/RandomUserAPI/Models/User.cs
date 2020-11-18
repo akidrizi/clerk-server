@@ -6,6 +6,7 @@
 		public Name? Name { get; set; }
 		public Location? Location { get; set; }
 		public string Email { get; set; }
+		public Registered? Registered { get; set; }
 		public Login? Login { get; set; }
 		public Dob? Dob { get; set; }
 		public string Phone { get; set; }
