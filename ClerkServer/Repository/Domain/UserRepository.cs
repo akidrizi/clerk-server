@@ -66,11 +66,11 @@ namespace ClerkServer.Repository.Domain {
 		}
 
 		public User FindByEmail(string email) {
-			return FindByCondition(u => u.Email.Equals(email)).FirstOrDefault();
+			return FindByCondition(u => u.Email.Equals(email.ToLower())).FirstOrDefault();
 		}
 
 		public async Task<User> FindByEmailAsync(string email) {
-			return await FindByCondition(u => u.Email.Equals(email)).FirstOrDefaultAsync();
+			return await FindByCondition(u => u.Email.Equals(email.ToLower())).FirstOrDefaultAsync();
 		}
 
 	}
