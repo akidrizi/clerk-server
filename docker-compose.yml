@@ -1,0 +1,29 @@
+version: '3.5'
+
+networks:
+  localdev:
+    name: localdev
+    
+services:
+  main-api:
+    build: ClerkServer/
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+    - "5100:80"
+    depends_on:
+      - db-server
+    networks:
+      - localdev
+        
+  db-server:
+    image: mysql:5.7
+    container_name: db-server
+    environment:
+      - MYSQL_ROOT_PASSWORD=clerk
+    ports:
+    - "3310:3306"
+    networks:
+      - localdev
+      

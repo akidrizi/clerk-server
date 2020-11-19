@@ -1,11 +1,12 @@
+using ClerkServer.Entities;
 using ClerkServer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace ClerkServer {
 
@@ -24,9 +25,9 @@ namespace ClerkServer {
 
 			services.ConfigureMySqlContext(Configuration);
 			services.ConfigureRepositoryWrapper();
-			
+
 			services.ConfigureRandomUserAPIClient();
-			
+
 			services.AddControllers().AddJsonOptions(options => {
 				options.JsonSerializerOptions.IgnoreNullValues = true;
 			});
@@ -41,12 +42,12 @@ namespace ClerkServer {
 			app.UseClerkSwagger();
 			app.UseCors("AllCORS");
 			app.UseClerkExceptionHandler();
-			
+
 			// Forward headers behind reverse proxy.
 			app.UseForwardedHeaders(new ForwardedHeadersOptions {
 				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 			});
-			
+
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
@@ -54,6 +55,10 @@ namespace ClerkServer {
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+			if (!env.IsProduction()) return;
+			using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+			scope.ServiceProvider.GetRequiredService<RepositoryContext>().Database.Migrate();
 		}
 
 	}
