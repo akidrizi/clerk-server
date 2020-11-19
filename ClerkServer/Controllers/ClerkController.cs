@@ -35,6 +35,7 @@ namespace ClerkServer.Controllers {
 		/// </remarks>
 		[HttpGet("clerks")]
 		[ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
 		public async Task<IActionResult> GetAllUsers() {
 			var users = await _repository.User.GetAllUsersAsync();
@@ -50,7 +51,7 @@ namespace ClerkServer.Controllers {
 		/// </remarks>
 		[HttpGet("clerks/{id}", Name = "GetUserById")]
 		[ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
 		public async Task<IActionResult> GetUserById(long id) {
 			var user = await _repository.User.GetUserByIdAsync(id);
@@ -63,19 +64,17 @@ namespace ClerkServer.Controllers {
 		}
 
 		/// <summary>
-		/// Retrieves random users from api.randomuser.me. Inserts unique users to database. 
+		/// Retrieves random users from api.randomuser.me. Inserts all emails, even duplicate emails to database. 
 		/// </summary>
 		/// <remarks>
 		/// - Required: users 0-5000. Number of results from **api.randomuser.me**.
-		/// - Unique users are these have a unique email in the database.
-		/// - Filters out duplicate emails from **api.randomuser.me** result.
 		/// - Returns Service Unavailable (503) status code when **api.randomuser.me** quota exceeds.
 		/// </remarks>
 		[HttpPost("populate")]
 		[ProducesResponseType(typeof(PopulateResponse), StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
-		[ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status503ServiceUnavailable)]
 		public async Task<IActionResult> Populate([FromBody]PopulateRequest request) {
 			var users = await _randomUserService.GetUsersWithUniqueEmail(request.Users);
 			if (!users.Any()) {
@@ -83,7 +82,7 @@ namespace ClerkServer.Controllers {
 				return StatusCode(503);
 			}
 
-			await _repository.User.BulkInsertUniqueUsersAsync(users);
+			await _repository.User.CreateRangeAsync(users);
 			var stored = await _repository.SaveAsync();
 
 			return Ok(new PopulateResponse {

@@ -17,9 +17,7 @@ namespace ClerkServer.Extensions {
 			if (catalog == null)
 				return new List<User>();
 
-			return catalog.Results
-				.GroupBy(x => x.Email).Select(y => y.FirstOrDefault()).ToList()
-				.Select(x => new User {
+			return catalog.Results.Select(x => new User {
 					Email = x.Email.ToLower(),
 					Name = $"{x.Name?.First} {x.Name?.Last}",
 					PhoneNumber = x.Phone,
