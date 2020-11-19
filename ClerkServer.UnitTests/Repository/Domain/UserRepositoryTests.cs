@@ -17,7 +17,7 @@ namespace ClerkServer.UnitTests.Repository.Domain {
 		public UserRepositoryTests(UserRepositoryFixture fixture) => _fixture = fixture;
 
 		[Fact]
-		public async Task GetAllUsersAsync_WithPreCreated_ReturnsListOfUsers() {
+		public async Task GetAllUsersAsync_WhilePreCreatedInDb_ReturnsListOfUsers() {
 			// Arrange
 			await using var context = _fixture.CreateContext();
 			var repository = new UserRepository(context);
@@ -31,7 +31,7 @@ namespace ClerkServer.UnitTests.Repository.Domain {
 		}
 
 		[Fact]
-		public async Task GetUserByIdAsync_FromQueriedUserList_ReturnsUser() {
+		public async Task GetUserByIdAsync_FromIdThatExistsInDb_ReturnsUser() {
 			// Arrange
 			await using var context = _fixture.CreateContext();
 			var repository = new UserRepository(context);
@@ -83,17 +83,17 @@ namespace ClerkServer.UnitTests.Repository.Domain {
 		}
 
 		[Fact]
-		public async Task FindByEmailAsync_ExistingUser_DeletedSuccessfully() {
+		public async Task FindByEmailAsync_WhileEmailExistsInDd_ReturnsListOfUsers() {
 			// Arrange
 			await using var context = _fixture.CreateContext();
 			var repository = new UserRepository(context);
 			var s = SeedData.GetCreatedUser().Email;
 
 			// Act
-			var user = await repository.FindByEmailAsync(s);
+			var list = await repository.FindUsersByEmailAsync(s);
 
 			// Assert
-			Assert.IsType<User>(user);
+			Assert.True(list.Any());
 		}
 
 	}

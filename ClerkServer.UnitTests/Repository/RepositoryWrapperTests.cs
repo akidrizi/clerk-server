@@ -44,7 +44,7 @@ namespace ClerkServer.UnitTests.Repository {
 		}
 
 		[Fact]
-		public async Task Create_NewUser_SavedSuccessfully() {
+		public async Task Create_UserEntity_SavedSuccessfully() {
 			// Arrange
 			await using var context = _fixture.CreateContext();
 			var repository = new RepositoryWrapper(context);
@@ -78,7 +78,7 @@ namespace ClerkServer.UnitTests.Repository {
 		}
 
 		[Fact]
-		public async Task Delete_User_DeletedSuccessfully() {
+		public async Task Delete_UserEntity_DeletedSuccessfully() {
 			// Arrange
 			await using var context = _fixture.CreateContext();
 			var repository = new RepositoryWrapper(context);

@@ -14,11 +14,11 @@ namespace ClerkServer.Repository.Domain {
 		public UserRepository(RepositoryContext repositoryContext) : base(repositoryContext) { }
 
 		public List<User> GetAllUsers() {
-			return FindAll().ToList();
+			return FindAll().OrderBy(u => u.RegistrationDate).ToList();
 		}
 
 		public async Task<List<User>> GetAllUsersAsync() {
-			return await FindAll().ToListAsync();
+			return await FindAll().OrderBy(u => u.RegistrationDate).ToListAsync();
 		}
 
 		public User GetUserById(long id) {
@@ -65,12 +65,12 @@ namespace ClerkServer.Repository.Domain {
 			await CreateRangeAsync(newEntries);
 		}
 
-		public User FindByEmail(string email) {
-			return FindByCondition(u => u.Email.Equals(email.ToLower())).FirstOrDefault();
+		public List<User> FindUsersByEmail(string email) {
+			return FindByCondition(u => u.Email.Equals(email.ToLower())).ToList();
 		}
 
-		public async Task<User> FindByEmailAsync(string email) {
-			return await FindByCondition(u => u.Email.Equals(email.ToLower())).FirstOrDefaultAsync();
+		public async Task<List<User>> FindUsersByEmailAsync(string email) {
+			return await FindByCondition(u => u.Email.Equals(email.ToLower())).ToListAsync();
 		}
 
 	}
