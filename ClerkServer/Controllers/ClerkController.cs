@@ -64,7 +64,7 @@ namespace ClerkServer.Controllers {
 		}
 
 		/// <summary>
-		/// Retrieves random users from api.randomuser.me. Inserts all emails, even duplicate emails to database. 
+		/// Retrieves random users from api.randomuser.me. Inserts all emails (and duplicates) to database. 
 		/// </summary>
 		/// <remarks>
 		/// - Required: users 0-5000. Number of results from **api.randomuser.me**.
@@ -76,7 +76,7 @@ namespace ClerkServer.Controllers {
 		[ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
 		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status503ServiceUnavailable)]
 		public async Task<IActionResult> Populate([FromBody]PopulateRequest request) {
-			var users = await _randomUserService.GetUsersWithUniqueEmail(request.Users);
+			var users = await _randomUserService.GetRandomUsersAsync(request.Users);
 			if (!users.Any()) {
 				ModelState.AddModelError("Unavailable", APIMessages.RandomUserAPIUnavailable);
 				return StatusCode(503);

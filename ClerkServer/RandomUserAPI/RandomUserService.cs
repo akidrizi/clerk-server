@@ -23,7 +23,7 @@ namespace ClerkServer.RandomUserAPI {
 		 *
 		 * Returns null if service is unavailable.
 		 */
-		public async Task<Catalog> GetRandomUsersAsync(int results = 0) {
+		public async Task<Catalog> CollectRandomUsersAsync(int results = 0) {
 			var response = await Client.GetAsync($"?results={results}&exc=cell,dob,id,gender,location,login,nat");
 			if (!response.IsSuccessStatusCode)
 				return null;				
