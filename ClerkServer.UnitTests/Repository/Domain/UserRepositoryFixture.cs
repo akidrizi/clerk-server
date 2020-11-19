@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using ClerkServer.Entities;
+using ClerkServer.UnitTests.Constants;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 
@@ -35,6 +36,11 @@ namespace ClerkServer.UnitTests.Repository.Domain {
 			using (var context = CreateContext()) {
 				context.Database.EnsureDeleted();
 				context.Database.EnsureCreated();
+
+				var user = SeedData.GetCreatedUser();
+
+				context.Add(user);
+				context.SaveChanges();
 			}
 
 			_databaseInitialized = true;

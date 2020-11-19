@@ -36,7 +36,7 @@ namespace ClerkServer.UnitTests.Repository {
 			using (var context = CreateContext()) {
 				context.Database.EnsureDeleted();
 				context.Database.EnsureCreated();
-				
+
 				var user = SeedData.GetCreatedUser();
 
 				context.Add(user);

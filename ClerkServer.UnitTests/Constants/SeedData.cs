@@ -21,7 +21,7 @@ namespace ClerkServer.UnitTests.Constants {
 				Picture = "//some.cdn.com/some-path/avatar.png"
 			};
 		}
-		
+
 	}
 
 }

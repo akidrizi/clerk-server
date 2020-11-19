@@ -83,7 +83,7 @@ namespace ClerkServer.Controllers {
 				return StatusCode(503);
 			}
 
-			await _repository.User.BulkInsertUsersAsync(users);
+			await _repository.User.BulkInsertUniqueUsersAsync(users);
 			var stored = await _repository.SaveAsync();
 
 			return Ok(new PopulateResponse {

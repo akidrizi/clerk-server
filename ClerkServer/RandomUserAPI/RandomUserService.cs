@@ -13,7 +13,7 @@ namespace ClerkServer.RandomUserAPI {
 		public RandomUserService(HttpClient client) {
 			client.BaseAddress = new Uri("https://randomuser.me/api/");
 			client.DefaultRequestHeaders.Add("Accept", "*/*");
-			client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
+			client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Clerk");
 
 			Client = client;
 		}
@@ -21,7 +21,7 @@ namespace ClerkServer.RandomUserAPI {
 		/*
 		 * Collects data from RandomUser API.
 		 *
-		 * Throws exception when service service is unavailable.
+		 * Returns null if service is unavailable.
 		 */
 		public async Task<Catalog> GetRandomUsersAsync(int results = 0) {
 			var response = await Client.GetAsync($"?results={results}&exc=cell,dob,id,gender,location,login,nat");

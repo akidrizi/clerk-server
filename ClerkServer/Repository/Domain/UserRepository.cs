@@ -41,7 +41,7 @@ namespace ClerkServer.Repository.Domain {
 			return user;
 		}
 
-		public void BulkInsertUsers(List<User> users) {
+		public void BulkInsertUniqueUsers(List<User> users) {
 			var incomingEmails = users.Select(u => u.Email).ToList();
 			var dbEmails = FindByCondition(u => incomingEmails
 					.Any(e => e == u.Email))
@@ -53,7 +53,7 @@ namespace ClerkServer.Repository.Domain {
 			CreateRange(newEntries);
 		}
 
-		public async Task BulkInsertUsersAsync(List<User> users) {
+		public async Task BulkInsertUniqueUsersAsync(List<User> users) {
 			var incomingEmails = users.Select(u => u.Email).ToList();
 			var dbEmails = await FindByCondition(u => incomingEmails
 					.Any(e => e == u.Email))
