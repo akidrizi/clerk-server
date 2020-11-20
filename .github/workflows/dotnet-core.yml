@@ -1,3 +1,4 @@
+
 name: .NET Core
 
 on:
@@ -12,12 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup MySQL
-      uses: mirromutth/mysql-action@v1.1
+    - name: Start MySQL
+      uses: samin/mysql-action@v1.3
       with:
         mysql version: 5.7
         mysql root password: 'clerk'
-        mysql database: 'clerk_test' 
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
