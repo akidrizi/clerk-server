@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClerkServer.Domain {
+namespace ClerkServer.DTO {
 
 	public class PopulateRequest {
 

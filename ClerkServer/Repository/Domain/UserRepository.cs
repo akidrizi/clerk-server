@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ClerkServer.Contracts.Domain;
-using ClerkServer.Domain;
+using ClerkServer.DTO;
 using ClerkServer.Entities;
 using ClerkServer.Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +19,40 @@ namespace ClerkServer.Repository.Domain {
 
 		public async Task<List<User>> GetAllUsersAsync() {
 			return await FindAll().OrderBy(u => u.RegistrationDate).ToListAsync();
+		}
+
+		public PagedList<User> GetUsers(UserParameters userParameters) {
+			var query = FindAll().OrderBy(u => u.RegistrationDate).AsQueryable();
+			if (userParameters.Email != null)
+				query = query.Where(u => u.Email == userParameters.Email.ToLower());
+
+			if (userParameters.Starting_After != null)
+				query = query.Where(u => u.Id > userParameters.Starting_After);
+
+			if (userParameters.Ending_Before != null)
+				query = query.Where(u => u.Id < userParameters.Ending_Before);
+
+			return PagedList<User>.ToPagedList(
+				query.OrderBy(u => u.RegistrationDate),
+				userParameters.Page,
+				userParameters.Limit);
+		}
+
+		public async Task<PagedList<User>> GetUsersAsync(UserParameters userParameters) {
+			var query = FindAll().OrderBy(u => u.RegistrationDate).AsQueryable();
+			if (userParameters.Email != null)
+				query = query.Where(u => u.Email == userParameters.Email.ToLower());
+
+			if (userParameters.Starting_After != null)
+				query = query.Where(u => u.Id > userParameters.Starting_After);
+
+			if (userParameters.Ending_Before != null)
+				query = query.Where(u => u.Id < userParameters.Ending_Before);
+
+			return await PagedList<User>.ToPagedListAsync(
+				query.OrderBy(u => u.RegistrationDate),
+				userParameters.Page,
+				userParameters.Limit);
 		}
 
 		public User GetUserById(long id) {

@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClerkServer.Constants;
 using ClerkServer.Contracts;
-using ClerkServer.Domain;
+using ClerkServer.DTO;
 using ClerkServer.Entities.Models;
 using ClerkServer.Extensions;
 using ClerkServer.RandomUserAPI;
@@ -28,19 +28,21 @@ namespace ClerkServer.Controllers {
 		/// </summary>
 		/// <remarks>
 		/// - **Query Parameters**
-		/// - limit: number of users to be returned. limit should range between 1 and 100.
+		/// - limit(default 10): number of entries to query. limit should range between 1 and 100.
 		/// - starting_after:
 		/// - ending_before:
-		/// - email:
+		/// - email: query with the given email.
+		/// - page: current page number.
 		/// </remarks>
 		[HttpGet("clerks")]
-		[ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(PagedResponse<User>), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
-		public async Task<IActionResult> GetAllUsers() {
-			var users = await _repository.User.GetAllUsersAsync();
-
-			return Ok(users);
+		public async Task<IActionResult> GetAllUsers([FromQuery]UserParameters userParameters) {
+			var users = await _repository.User.GetUsersAsync(userParameters);
+			
+			var response = new PagedResponse<User>(users);
+			return Ok(response);
 		}
 
 		/// <summary>
@@ -76,7 +78,7 @@ namespace ClerkServer.Controllers {
 		[ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError)]
 		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status503ServiceUnavailable)]
 		public async Task<IActionResult> Populate([FromBody]PopulateRequest request) {
-			var users = await _randomUserService.GetRandomUsersAsync(request.Users);
+			var users = await _randomUserService.ToUsersAsync(request.Users);
 			if (!users.Any()) {
 				ModelState.AddModelError("Unavailable", APIMessages.RandomUserAPIUnavailable);
 				return StatusCode(503);

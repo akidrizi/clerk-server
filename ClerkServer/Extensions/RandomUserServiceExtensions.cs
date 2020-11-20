@@ -10,9 +10,9 @@ namespace ClerkServer.Extensions {
 	public static class RandomUserServiceExtensions {
 		
 		/*
-		 * Collect response from Random User API without filtering.
+		 * Convert response from Random User API to User entity without duplicate email filtering.
 		 */
-		public static async Task<List<User>> GetRandomUsersAsync(this RandomUserService randomUserService, int results) {
+		public static async Task<List<User>> ToUsersAsync(this RandomUserService randomUserService, int results) {
 			var catalog = await randomUserService.CollectRandomUsersAsync(results);
 			if (catalog == null)
 				return new List<User>();
@@ -28,14 +28,16 @@ namespace ClerkServer.Extensions {
 		}
 
 		/*
-		 * Filters out duplicate emails from the API response.
+		 * Convert response from Random User API to User entity with duplicate email filtering.
+		 *
+		 * Filters out duplicates with the oldest registration date. 
 		 */
-		public static async Task<List<User>> GetUsersWithUniqueEmail(this RandomUserService randomUserService, int results) {
+		public static async Task<List<User>> ToUniqueUsersAsync(this RandomUserService randomUserService, int results) {
 			var catalog = await randomUserService.CollectRandomUsersAsync(results);
 			if (catalog == null)
 				return new List<User>();
 
-			return catalog.Results
+			return catalog.Results.OrderBy(u => u.Registered)
 				.GroupBy(x => x.Email).Select(y => y.FirstOrDefault()).ToList()
 				.Select(x => new User {
 					Email = x.Email.ToLower(),

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClerkServer.Domain;
+using ClerkServer.DTO;
 using ClerkServer.Entities.Models;
 using ClerkServer.Repository;
 using ClerkServer.Repository.Domain;
@@ -87,10 +87,10 @@ namespace ClerkServer.UnitTests.Repository.Domain {
 			// Arrange
 			await using var context = _fixture.CreateContext();
 			var repository = new UserRepository(context);
-			var s = SeedData.GetCreatedUser().Email;
+			var email = SeedData.GetCreatedUser().Email;
 
 			// Act
-			var list = await repository.FindUsersByEmailAsync(s);
+			var list = await repository.FindUsersByEmailAsync(email);
 
 			// Assert
 			Assert.True(list.Any());

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ClerkServer.Domain {
+namespace ClerkServer.DTO {
 
 	public class ErrorDetails {
 

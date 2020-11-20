@@ -1,4 +1,4 @@
-﻿namespace ClerkServer.Domain {
+﻿namespace ClerkServer.DTO {
 
 	public class PopulateResponse {
 

@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using ClerkServer.Domain;
+using ClerkServer.DTO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;

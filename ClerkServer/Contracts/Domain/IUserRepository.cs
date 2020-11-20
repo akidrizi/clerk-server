@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ClerkServer.Domain;
+using ClerkServer.DTO;
 using ClerkServer.Entities.Models;
 
 namespace ClerkServer.Contracts.Domain {
@@ -18,6 +18,16 @@ namespace ClerkServer.Contracts.Domain {
 		Task<List<User>> GetAllUsersAsync();
 
 		/*
+		 * Get a paginated response of users.
+		 */
+		PagedList<User> GetUsers(UserParameters userParameters);
+
+		/*
+		 * Get a paginated response of users.
+		 */
+		Task<PagedList<User>> GetUsersAsync(UserParameters userParameters);
+
+		/*
 		 * Get single user by ID
 		 */
 		User GetUserById(long id);
@@ -31,7 +41,7 @@ namespace ClerkServer.Contracts.Domain {
 		 * Create new User from a data transfer object.
 		 */
 		User CreateUser(UserDto dto);
-		
+
 		/*
 		 * Inserts list of users in the database.
 		 * Will exclude emails that already exist.
@@ -48,7 +58,7 @@ namespace ClerkServer.Contracts.Domain {
 		 * Get list of users matching the provided email.
 		 */
 		List<User> FindUsersByEmail(string email);
-		
+
 		/*
 		 * Get list of users matching the provided email.
 		 */
