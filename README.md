@@ -2,7 +2,7 @@
 
 ClerkServer is a Web Application that collects random users from https://randomuser.me/api and saves them in chunks in the database. Developed with .NET Core 3.1 and MySQL 5.7.
 
-The API serves three (3) anonymous endpoints that allow the user to control the system to either collect new or read existing user(s). All endpoints all accessible through Swagger, but for greater experience, it is highly recommended to use a well known Rest Client.
+The API serves three (3) anonymous endpoints that allow the user to control the system to either collect new or read existing user(s). All endpoints are accessible through Swagger, but for greater experience, it is highly recommended to use a well known Rest Client.
 
 # How to run
 
