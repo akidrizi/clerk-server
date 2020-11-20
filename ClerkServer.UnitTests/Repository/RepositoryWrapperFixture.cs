@@ -12,7 +12,7 @@ namespace ClerkServer.UnitTests.Repository {
 		private static bool _databaseInitialized;
 
 		public RepositoryWrapperFixture() {
-			Connection = new MySqlConnection(@"Server=localhost;User Id=root;Password=;Database=clerk_test;");
+			Connection = new MySqlConnection(@"Server=localhost;User Id=root;Password=clerk;Database=clerk_test;");
 
 			Seed();
 
