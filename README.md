@@ -6,7 +6,7 @@ The API serves three (3) anonymous endpoints that allow the user to control the 
 
 # How to run
 
-From the root path of the project: build the Docker image:
+From the root path of the project; build the Docker image:
 
 ```bash
 docker-compose build
