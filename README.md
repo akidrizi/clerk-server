@@ -6,21 +6,31 @@ The API serves three (3) anonymous endpoints that allow the user to control the 
 
 # How to run
 
-#### From the root path of the project.
+From the root path of the project: build the Docker image:
 
-##### To build Docker image:
+```bash
+docker-compose build
+```
 
+ By default, the API will be built on `port :5100` and MySQL on `port :3310`. Ensure these ports are free else edit `docker-compose.yml`.
 
-`docker-compose build`
+```python
+    ports:
+    - "5100:80"
+    .
+    .
+    .
+   ports:
+    - "3310:3306"
+```
 
- By default, the API will be built on port **:5100** and MySQL on port **:3310**. Ensure these ports are free else edit `docker-compose.yml`.
+Run the image.
 
-##### To run the image:
+```bash
+docker-compose up
+```
 
-
-`docker-compose up`
-
-Open the API on a browser at localhost:5100 to view Swagger with extra documentation for the API. Feel free to connect to the database with user: `root` and password: `clerk`
+Open the API on a browser at `localhost:5100` to view Swagger with extra documentation for the API. Feel free to connect to the database with user: `root` and password: `clerk`
 
 ## Folder Structure
 
